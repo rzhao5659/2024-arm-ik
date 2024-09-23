@@ -1,0 +1,7 @@
+JointCommand turret
+JointCommand shoulder
+JointCommand elbow
+JointCommand elbow_roll
+JointCommand wrist_pitch
+JointCommand wrist_roll
+JointCommand gripper

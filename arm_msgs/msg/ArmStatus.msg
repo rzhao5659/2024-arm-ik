@@ -1,0 +1,7 @@
+JointStatus turret
+JointStatus shoulder
+JointStatus elbow
+JointStatus elbow_roll
+JointStatus wrist_pitch
+JointStatus wrist_roll
+JointStatus gripper

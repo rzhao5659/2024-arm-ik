@@ -1,0 +1,7 @@
+uint8 COMMAND_TYPE_UNUSED = 0
+uint8 COMMAND_TYPE_POSITION = 1
+uint8 COMMAND_TYPE_VELOCITY = 2
+uint8 COMMAND_TYPE_STOP = 3
+
+uint8 command_type
+float64 value
