@@ -1,3 +1,6 @@
+A video in Rviz demonstrating it https://youtu.be/pnsKVVDwreI
+
+
 ## Description
 
 Local IK allows moving arm's end effector locally either with respect to **base frame** or **end effector frame**.
