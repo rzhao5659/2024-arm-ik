@@ -1,6 +1,8 @@
 
 ## Overview
 
+See demo here: (https://youtu.be/pnsKVVDwreI)
+
 This packages contains
 - `solvers.py` contains IK and FK solvers for 6R arm.
 - `local_ik_node.py` and `constant_ee_ik_node.py` are nodes that uses solvers to control arm.
