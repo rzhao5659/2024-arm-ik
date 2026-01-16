@@ -26,8 +26,11 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/ArmStatus.msg"
   "msg/JointCommand.msg"
   "msg/JointStatus.msg"
-  "msg/MouseState.msg"
-  "srv/LocalIKFrameRequest.srv"
+  "msg/ModelArmState.msg"
+  "msg/IKInput.msg"
+  "msg/PresetInfo.msg"
+  "srv/ModeRequest.srv"
+  "srv/SafetyRequest.srv"
   DEPENDENCIES std_msgs
 )
 

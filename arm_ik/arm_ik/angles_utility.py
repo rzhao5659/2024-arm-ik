@@ -1,14 +1,13 @@
 import math
-from typing import List
 
-# Constants for the program
-PI = math.pi
-DEG2RAD = PI / 180
-RAD2DEG = 180 / PI
+import numpy as np
 
+"""
+Angle utility functions for mapping between physical and software coordinate frames.
 
-# This file contains functions that deals with angles
-# which includes mapping angles from PHYSICAL range to SOFTWARE range, and vice-versa.
+Physical range: What the encoders report
+Software range: What the IK/FK solvers assume ([-pi, pi])
+"""
 
 
 def get_angle_diff(angle1: float, angle2: float) -> float:
@@ -29,23 +28,16 @@ def normalize_angle(angle: float) -> float:
     return math.atan2(math.sin(angle), math.cos(angle))
 
 
-def convert_angles_from_deg_to_rad(angles: List) -> List:
-    result = []
-    for q in angles:
-        result.append(q * DEG2RAD)
-    return result
-
-
-def convert_angles_from_rad_to_deg(angles: List) -> List:
-    result = []
-    for q in angles:
-        result.append(q * RAD2DEG)
-    return result
+def normalize_angles(angles: np.ndarray) -> np.ndarray:
+    """
+    Normalizes angle to be in range [-pi,pi].
+    """
+    return np.arctan2(np.sin(angles), np.cos(angles))
 
 
 def map_joint_angles_from_software_to_physical(
-    solved_joint_angles: List, curr_joint_angles: List
-) -> List:
+    solved_joint_angles: np.ndarray, curr_joint_angles: np.ndarray
+) -> np.ndarray:
     """
     Map the solved joint angles from ik_solver, back to their original range,
     and return these as a tuple. Assume all joint angles are in radians, including current joint
@@ -84,10 +76,12 @@ def map_joint_angles_from_software_to_physical(
     # Wrist roll needs to be in the range of [-inf, inf].
     sq6 = _move_angle_in_shortest_distance(q6, sq6)
 
-    return [sq1, sq2, sq3, sq4, sq5, sq6]
+    return np.array([sq1, sq2, sq3, sq4, sq5, sq6])
 
 
-def map_joint_angles_from_physical_to_software(curr_joint_angles: List) -> List:
+def map_joint_angles_from_physical_to_software(
+    curr_joint_angles: np.ndarray,
+) -> np.ndarray:
     """
     Map the measured joint angles, to the range that the fk and ik solvers assume,
     and return these as a tuple. Assume all angles are in radians.
@@ -124,14 +118,14 @@ def map_joint_angles_from_physical_to_software(curr_joint_angles: List) -> List:
     # Positive direction and origin matches with software assumption
     q6 = normalize_angle(q6)
 
-    return [q1, q2, q3, q4, q5, q6]
+    return np.array([q1, q2, q3, q4, q5, q6])
 
 
 def _map_angle_to_90_270(q: float):
     """Map an angle [rad] to the range [-pi/2, 2pi/3]"""
     q = normalize_angle(q)
-    if -PI < q < -PI / 2:
-        q += 2 * PI
+    if -math.pi < q < -math.pi / 2:
+        q += 2 * math.pi
     return q
 
 
@@ -148,9 +142,7 @@ def _move_angle_in_shortest_distance(from_angle: float, to_angle: float) -> floa
     This function is used for mapping angles for joints that are multi-turn.
     """
     # 1. Get the difference in [-pi,pi] between from_angle and to_angle in the unit circle.
-    diff_angle = normalize_angle(
-        normalize_angle(to_angle) - normalize_angle(from_angle)
-    )
+    diff_angle = normalize_angle(normalize_angle(to_angle) - normalize_angle(from_angle))
     # 2. Add this difference to the from_angle.
     final_angle = from_angle + diff_angle
     return final_angle

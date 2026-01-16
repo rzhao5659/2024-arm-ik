@@ -1,0 +1,7 @@
+<launch>
+  <node pkg="arm_ik" exec="constant_ee_ik_node" name="constant_ee_ik_node">
+    <param name="typing_dynamixel" value="False" />
+  </node>
+  <node pkg="arm_ik" exec="local_ik_node" name="local_ik_node"/>
+
+</launch>

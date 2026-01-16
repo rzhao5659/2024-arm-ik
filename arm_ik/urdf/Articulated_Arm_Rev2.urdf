@@ -24,10 +24,11 @@
     <visual>
       <origin
         xyz="0 0 0"
-        rpy="0 0 0" />
+        rpy="1.5707963268 0 0"
+        />
       <geometry>
         <mesh
-          filename="package://arm_ik/meshes/chassis_base.STL" />
+          filename="package://arm_ik/meshes/new_chassis_base.STL"/>
       </geometry>
       <material
         name="">
@@ -41,7 +42,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://arm_ik/meshes/chassis_base.STL" />
+          filename="package://arm_ik/meshes/new_chassis_base.STL" />
       </geometry>
     </collision>
   </link>

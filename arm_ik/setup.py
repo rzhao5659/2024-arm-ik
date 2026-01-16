@@ -1,5 +1,6 @@
 import os
 from glob import glob
+
 from setuptools import find_packages, setup
 
 package_name = "arm_ik"
@@ -25,11 +26,12 @@ setup(
     tests_require=["pytest"],
     entry_points={
         "console_scripts": [
-            "ik_solve_test = test.ik_solve_test:main",
-            "local_ik_test = test.local_ik_test:main",
             "local_ik_node = arm_ik.local_ik_node:main",
+            "constant_ee_ik_node = arm_ik.constant_ee_ik_node:main",
+            "ik_solve_test = test.ik_solve_test:main",
             "fk_solve_test = test.fk_solve_test:main",
-            "arm_status_rviz = test.arm_status_rviz:main",
+            "ik_node_test = test.ik_node_test:main",
+            "arm_status_rviz = arm_ik.arm_status_rviz:main",
             "ik_command_rviz = test.ik_command_rviz:main",
         ],
     },

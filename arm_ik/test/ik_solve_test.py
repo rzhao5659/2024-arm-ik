@@ -1,23 +1,23 @@
-import rclpy
-from rclpy.node import Node
 import numpy as np
-from arm_msgs.msg import MouseState
 from arm_ik.solvers import ik_solve
-from sensor_msgs.msg import JointState
 from scipy.spatial.transform import Rotation
 
+import rclpy
+from rclpy.node import Node
+
+from arm_msgs.msg import IKInput
+from sensor_msgs.msg import JointState
+
 # This is a manual test for the ik solver (not the local ik node).
-# The user puts a desired goal pose and goal orientation through a MouseState msg in rqt.
+# The user puts a desired goal pose and goal orientation through a IKInput msg in rqt.
 # This code will subscribe to it, solve ik, and publish the joint values as JointStates.
 # Verify by visualization in RVIZ with display.launch.py,
 
 
-class IKTestNode(Node):
+class IKSolveTestNode(Node):
     def __init__(self):
-        super().__init__("ik_solve_test")
-        self.sub = self.create_subscription(
-            MouseState, "/test/ik_cmd", self.ik_cb, qos_profile=10
-        )
+        super().__init__("ik_solve_test_node")
+        self.sub = self.create_subscription(IKInput, "/test/ik_cmd", self.ik_cb, qos_profile=10)
         self.pub = self.create_publisher(JointState, "/joint_states", qos_profile=10)
 
         # This last joint state will simulate current arm position.
@@ -59,6 +59,6 @@ class IKTestNode(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    node = IKTestNode()
+    node = IKSolveTestNode()
     rclpy.spin(node)
     rclpy.shutdown()

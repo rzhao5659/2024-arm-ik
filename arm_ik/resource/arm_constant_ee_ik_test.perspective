@@ -1,0 +1,71 @@
+{
+  "keys": {},
+  "groups": {
+    "mainwindow": {
+      "keys": {
+        "geometry": {
+          "repr(QByteArray.hex)": "QtCore.QByteArray(b'01d9d0cb00030000000000460000001b000005e7000003890000004600000040000005e700000389000000000000000005e80000004600000040000005e700000389')",
+          "type": "repr(QByteArray.hex)",
+          "pretty-print": "     F       F @          F @    "
+        },
+        "state": {
+          "repr(QByteArray.hex)": "QtCore.QByteArray(b'000000ff00000000fd0000000100000003000005a20000031efc0100000001fb00000058007200710074005f007000750062006c00690073006800650072005f005f005000750062006c00690073006800650072005f005f0031005f005f005000750062006c006900730068006500720057006900640067006500740100000000000005a20000023d00ffffff000005a20000000000000004000000040000000800000008fc00000001000000030000000100000036004d0069006e0069006d0069007a006500640044006f0063006b00570069006400670065007400730054006f006f006c0062006100720000000000ffffffff0000000000000000')",
+          "type": "repr(QByteArray.hex)",
+          "pretty-print": "                 Xrqt_publisher__Publisher__1__PublisherWidget                            6MinimizedDockWidgetsToolbar        "
+        }
+      },
+      "groups": {
+        "toolbar_areas": {
+          "keys": {
+            "MinimizedDockWidgetsToolbar": {
+              "repr": "8",
+              "type": "repr"
+            }
+          },
+          "groups": {}
+        }
+      }
+    },
+    "pluginmanager": {
+      "keys": {
+        "running-plugins": {
+          "repr": "{'rqt_publisher/Publisher': [1]}",
+          "type": "repr"
+        }
+      },
+      "groups": {
+        "plugin__rqt_publisher__Publisher__1": {
+          "keys": {},
+          "groups": {
+            "dock_widget__PublisherWidget": {
+              "keys": {
+                "dock_widget_title": {
+                  "repr": "'Message Publisher'",
+                  "type": "repr"
+                },
+                "dockable": {
+                  "repr": "True",
+                  "type": "repr"
+                },
+                "parent": {
+                  "repr": "None",
+                  "type": "repr"
+                }
+              },
+              "groups": {}
+            },
+            "plugin": {
+              "keys": {
+                "publishers": {
+                  "repr": "\"[{'topic_name': '/arm/status/moteus', 'type_name': 'arm_msgs/msg/ArmStatus', 'rate': 1.0, 'enabled': False, 'publisher_id': 0, 'counter': 560, 'expressions': {'/arm/status/moteus/turret/position': '20', '/arm/status/moteus/shoulder/position': '45', '/arm/status/moteus/elbow/position': '85', '/arm/status/moteus/elbow/status': '1', '/arm/status/moteus/shoulder/status': '1', '/arm/status/moteus/turret/status': '1', '/arm/status/moteus/elbow_roll/status': '1', '/arm/status/moteus/elbow_roll/position': '15'}}, {'topic_name': '/arm/status/dynamixel', 'type_name': 'arm_msgs/msg/ArmStatus', 'rate': 1.0, 'enabled': False, 'publisher_id': 1, 'counter': 498, 'expressions': {'/arm/status/dynamixel/wrist_pitch/status': '1', '/arm/status/dynamixel/wrist_roll/status': '1', '/arm/status/dynamixel/gripper/status': '1', '/arm/status/dynamixel/gripper/position': '0', '/arm/status/dynamixel/wrist_roll/position': '30', '/arm/status/dynamixel/wrist_pitch/position': '30'}}, {'topic_name': '/arm/model/raw', 'type_name': 'arm_msgs/msg/ModelArmState', 'rate': 1.0, 'enabled': False, 'publisher_id': 2, 'counter': 452, 'expressions': {'/arm/model/raw/turret': '25', '/arm/model/raw/shoulder': '48', '/arm/model/raw/elbow': '90'}}]\"",
+                  "type": "repr"
+                }
+              },
+              "groups": {}
+            }
+          }
+        }
+      }
+    }
+  }
+}

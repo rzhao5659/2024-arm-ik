@@ -1,11 +1,12 @@
+import math
+
+from arm_ik.angles_utility import map_joint_angles_from_physical_to_software
+
 import rclpy
 from rclpy.node import Node
+
 from arm_msgs.msg import ArmStatus
 from sensor_msgs.msg import JointState
-import math
-from arm_ik.angles_utility import (
-    map_joint_angles_from_physical_to_software,
-)
 
 PI = math.pi
 DEG2RAD = PI / 180
@@ -23,13 +24,11 @@ class ArmStatusRviz(Node):
     """
 
     def __init__(self):
-        super().__init__("local_ik_test")
+        super().__init__("arm_status_rviz")
         self.sub = self.create_subscription(
             ArmStatus, "/arm/status/all", self.arm_status_cb, qos_profile=10
         )
-        self.joint_state_pub = self.create_publisher(
-            JointState, "/joint_states", qos_profile=10
-        )
+        self.joint_state_pub = self.create_publisher(JointState, "/joint_states", qos_profile=10)
         self.pub_timer = self.create_timer(0.1, self.publish_all)
         self.joints_names = [
             "turret",
@@ -39,13 +38,13 @@ class ArmStatusRviz(Node):
             "wrist_pitch",
             "wrist_roll",
         ]
+        self.declare_parameter("start_position", [0.0] * 7)
+        start_positions = self.get_parameter("start_position").value
+        if len(start_positions) < 6:
+            raise ValueError("Please supply 6 positions, one for each joint")
+
         self.goal_joints_values = [
-            0.0,
-            0.0,
-            PI / 2,
-            0.0,
-            PI / 4,
-            0.0,
+            math.radians(v) for v in start_positions[:6]
         ]  # Initial values of the displayed robot. This is in software range.
 
     def publish_all(self):
@@ -69,9 +68,7 @@ class ArmStatusRviz(Node):
         # into the range that the software assumes.
         physical_goal_joint_values = []
         for i in range(len(self.joints_names)):
-            physical_goal_joint_values.append(
-                getattr(msg, self.joints_names[i]).position * DEG2RAD
-            )
+            physical_goal_joint_values.append(getattr(msg, self.joints_names[i]).position * DEG2RAD)
 
         goal_joint_values = map_joint_angles_from_physical_to_software(
             tuple(physical_goal_joint_values)

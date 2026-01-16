@@ -1,15 +1,13 @@
+import math
+
+import numpy as np
+from arm_ik.angles_utility import map_joint_angles_from_physical_to_software
+
 import rclpy
 from rclpy.node import Node
+
 from arm_msgs.msg import ArmCommand
 from sensor_msgs.msg import JointState
-import math
-from arm_ik.angles_utility import (
-    map_joint_angles_from_physical_to_software,
-)
-
-PI = math.pi
-DEG2RAD = PI / 180
-RAD2DEG = 180 / PI
 
 
 class IKCommandRviz(Node):
@@ -24,12 +22,16 @@ class IKCommandRviz(Node):
 
     def __init__(self):
         super().__init__("ik_command_rviz")
+        self.declare_parameter("ik_topic")
+        ik_topic = self.get_parameter("ik_topic").value
+        self.get_logger().info(f"Mapping from {ik_topic} to /joint_states")
         self.sub = self.create_subscription(
-            ArmCommand, "/arm/command/ik", self.ik_cmd_cb, qos_profile=10
+            ArmCommand,
+            ik_topic,
+            self.ik_cmd_cb,
+            qos_profile=10,
         )
-        self.joint_state_pub = self.create_publisher(
-            JointState, "/joint_states", qos_profile=10
-        )
+        self.joint_state_pub = self.create_publisher(JointState, "/joint_states", qos_profile=10)
         self.pub_timer = self.create_timer(0.1, self.publish_all)
         self.joints_names = [
             "turret",
@@ -39,14 +41,16 @@ class IKCommandRviz(Node):
             "wrist_pitch",
             "wrist_roll",
         ]
-        self.goal_joints_values = [
-            0.0,
-            0.0,
-            PI / 2,
-            0.0,
-            PI / 4,
-            0.0,
-        ]  # Initial values. This will be in software range.
+        self.goal_joints_values = np.array(
+            [
+                0.0,
+                0.0,
+                math.pi / 2,
+                0.0,
+                math.pi / 4,
+                0.0,
+            ]
+        )  # Initial values. This will be in software range.
 
     def publish_all(self):
         # Publish the stored goal joint values as JointState message to visualize in RVIZ.
@@ -67,15 +71,13 @@ class IKCommandRviz(Node):
         # Retrieve each joint commanded value from msg.
         # Note that these joint angles are in physical range, so we need to map them
         # into the range that the software assumes.
-        physical_goal_joint_values = []
+        physical_goal_joint_values = np.zeros(6)
         for i in range(len(self.joints_names)):
-            physical_goal_joint_values.append(
-                getattr(msg, self.joints_names[i]).value * DEG2RAD
-            )
+            physical_goal_joint_values[i] = getattr(msg, self.joints_names[i]).value
 
-        goal_joint_values = map_joint_angles_from_physical_to_software(
-            tuple(physical_goal_joint_values)
-        )
+        physical_goal_joint_values = np.deg2rad(physical_goal_joint_values)
+        goal_joint_values = map_joint_angles_from_physical_to_software(physical_goal_joint_values)
+
         self.goal_joints_values = goal_joint_values
 
 
